@@ -48,7 +48,9 @@ app.put('/api/genres/:id', (req, res)=>{
     
     
     const { error } = validateGenres(req.body); //result.error
-    if(error){return res.status(400).send(result.error.details[0].message);}//400 bad request 
+    if(error){
+        return res.status(400).send(error.details[0].message);
+    }//400 bad request 
 
    
     genre.name = req.body.name;

@@ -1,31 +1,29 @@
-
+const morgan  = require('morgan');
+const helmet = require('helmet');
 const Joi = require('joi');
+const logger = require('./logger');
+const authenticating = require('./authenticating');
 const express = require('express'); // load express 
 const app = express(); // call express as app
 
-app.use(express.json());
+app.use(express.json());//middleware function
+
+app.use(logger);//middleware function outbound to logger.js
+
+app.use(authenticating); //middleware function outbound to authenticating.js
+
+app.use(express.urlencoded({extended: true})); // parses incoming  requests with url encoded payloads ex.  key=value&key=value
+app.use(express.static('public'));
+
+app.use(helmet());//adding helmet middleware
+app.use(morgan('tiny'))//adding morgan middleware
+
 ////define array of courses
 const courses = [
     {id: 1, name: 'couses1'},
     {id: 2, name: 'couses2'},
     {id: 3, name: 'couses3'}
 ];
-
-//add genres
-
-const genres = [
-    {id: 1, name: 'Action'},
-    {id: 2, name: 'Adventure'},
-    {id: 3, name: 'Comedy'},
-    {id: 4, name: 'Crime'},
-    {id: 5, name: 'Drama'},
-    {id: 6, name: 'Historical'},
-    {id: 7, name: 'Horror'},
-    {id: 8, name: 'Musicals'},
-    {id: 9, name: 'Sci-Fi'},
-    {id: 10, name: 'War'},
-    {id: 11, name: 'Western'}
-]
 
 //respond to an http get request, takes 2 arguments first is the URL
 //second argument is callback function / route  handler
@@ -89,7 +87,7 @@ app.put('/api/courses/:id', (req, res)=>{
     //if invalid, return 400 - bad request
     //const result = validataeCourse(req.body);
     const { error } = validataeCourse(req.body); //result.error
-    if(error){return res.status(400).send(result.error.details[0].message);}//400 bad request 
+    if(error){return res.status(400).send(error.details[0].message);}//400 bad request 
 
     //update course
     //return the updated course
