@@ -1,3 +1,5 @@
+
+const config = require('config');
 const morgan  = require('morgan');
 const helmet = require('helmet');
 const Joi = require('joi');
@@ -20,6 +22,11 @@ app.use(express.urlencoded({extended: true})); // parses incoming  requests with
 app.use(express.static('public'));
 
 app.use(helmet());//adding helmet middleware
+
+//Configuration
+console.log('Application Name: ' + config.get('name'));
+console.log('Mail Server: ' + config.get('mail.host'));
+console.log('Mail Password: ' + config.get('mail.password'));
 
 //check if  environment is running  in development
 if(app.get('env') === 'development'){
