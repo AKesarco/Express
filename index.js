@@ -6,6 +6,10 @@ const authenticating = require('./authenticating');
 const express = require('express'); // load express 
 const app = express(); // call express as app
 
+//process.env.NODE_ENV // undefined
+//console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+//console.log(`app: ${app.get('env')}`);
+
 app.use(express.json());//middleware function
 
 app.use(logger);//middleware function outbound to logger.js
@@ -16,7 +20,14 @@ app.use(express.urlencoded({extended: true})); // parses incoming  requests with
 app.use(express.static('public'));
 
 app.use(helmet());//adding helmet middleware
-app.use(morgan('tiny'))//adding morgan middleware
+
+//check if  environment is running  in development
+if(app.get('env') === 'development'){
+    app.use(morgan('tiny'))//adding morgan middleware
+    console.log('Morgan enabled...');
+}
+
+
 
 ////define array of courses
 const courses = [
