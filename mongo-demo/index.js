@@ -37,15 +37,21 @@ async function getCourses(){
     //in
     //nin (not in)
 
-
+    const pageNumber = 2;
+    const pageSize = 10;
+    // /api/courses?pageNumber=2&pageSize=10
     const courses = await Course
     //.find({ author: 'Ankush', isPublished: true}) //find in documents were author is Ankush and isPublished is equal  to true
     //.find({price: { $gt: 10}}) //example of price greater than 10
     //.find({price: {$gt: 10, $lt : 20}}) //get prices that are between  10 and 20 
-    .find({price: {$in: [10,  15, 20]}}) //get prices that are 10,  15 or 20
-    .limit(10) // find the results to  10
+    //.find({price: {$in: [10,  15, 20]}}) //get prices that are 10,  15 or 20
+    .find({author: 'Ankush', isPublished: true})
+    //.limit(10) // find the results to  10
+    .skip((pageNumber -1) * pageSize) //pagenation
+    .limit(pageSize) // change limit to  pageSize
     .sort({name: -1}) // sort the name by desc
-    .select({name: 1, tags:1}); // select only name and tags
+    .count(); //  count how  many documents match find
+    //.select({name: 1, tags:1}); // select only name and tags
     console.log(courses);
 }
 
