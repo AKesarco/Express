@@ -55,6 +55,54 @@ async function getCourses(){
     console.log(courses);
 }
 
-getCourses();
-//createCourse();
+//updating Course Query First
+async function updateCourse(id){
+    //Approach: Update first
+    //Update directly
+    //Optionally: get the udpated document
+    const course = await Course.findById(id);
+    if(!course) return;
+    course.isPublished = true;
+    course.author = 'Another Author';
 
+    const result = await course.save();
+    console.log(result);
+    //below is also another approach
+    // course.set({
+    //     isPublished: true,
+    //     author: 'Another Author'
+    // });
+}
+
+//updating Course Update First
+async function updateCourseUF(id){
+    // const result = await Course.update({ _id: id},{ //if get document that was changed -- Course.findByIdAndUpdate
+    //     $set:{
+    //         author:'Ankush',
+    //         isPublished: false
+    //     }
+    // });
+
+    // console.log(result);
+    //if get document that was changed -- Course.findByIdAndUpdate
+    const course = await Course.findByIdAndUpdate(id,{
+        $set:{
+            author:'Jason',
+            isPublished: false
+        }
+    }, {new: true}); //object gets new document
+
+    console.log(course);
+}
+//remove course document
+async function removeCourse(id){    
+    //const result = await Course.deleteOne({_id:id});
+    const course = await Course.findByIdAndRemove(id);
+    console.log(course);
+}
+
+//getCourses();
+//createCourse();
+//updateCourse('5b01c1e2a5d36536bc545c24');
+//updateCourseUF('5b01c1e2a5d36536bc545c24');
+removeCourse('5b01c1e2a5d36536bc545c24');

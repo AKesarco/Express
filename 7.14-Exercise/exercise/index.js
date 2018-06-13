@@ -1,9 +1,7 @@
 
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/mongo-exercises')
-    .then(()=> console.log('Connected to MongoDB Exercises...'))
-    .catch(err =>  console.log('Could not  connect to MongoDB...', err));
+mongoose.connect('mongodb://localhost/mongo-exercises');
 
 //Schema
 const courseSchema = new mongoose.Schema({
